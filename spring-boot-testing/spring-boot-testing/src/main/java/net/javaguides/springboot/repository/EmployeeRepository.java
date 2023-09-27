@@ -4,8 +4,6 @@ import net.javaguides.springboot.model.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
-
 import java.util.Optional;
 
 //@Repository
@@ -24,7 +22,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
             @Param ("lastName") String lastName);
 
     // define custom query using native SQL with index params
-    @Query(value = "select * from employees where e.first_name = ?1 and e.last_name = ?2" , nativeQuery = true)
+    @Query(value = "select * from employees e where e.first_name = ?1 and e.last_name = ?2" , nativeQuery = true)
     Employee findByNativeSQL (String firstName, String lastName);
 
 
