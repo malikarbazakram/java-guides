@@ -1,14 +1,14 @@
 package net.javaguides.springboot.repository;
 
 import net.javaguides.springboot.model.Employee;
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;
 import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -18,12 +18,8 @@ public class EmployeeRepositoryTests {
     private Employee employee;
 
     @BeforeEach
-    public void setup(){
-        employee = Employee.builder()
-                .firstName("Ramesh")
-                .lastName("Kakar")
-                .email("Ramesh@kakar.com")
-                .build();
+    public void setup() {
+        employee = Employee.builder().firstName("Ramesh").lastName("Kakar").email("Ramesh@kakar.com").build();
     }
     // given_when_then naming conventions
 
@@ -57,11 +53,7 @@ public class EmployeeRepositoryTests {
 //                .lastName("Kakar")
 //                .email("Ramesh@kakar.com")
 //                .build();
-        Employee employee1 = Employee.builder()
-                .firstName("John")
-                .lastName("Smith")
-                .email("John@Cena.com")
-                .build();
+        Employee employee1 = Employee.builder().firstName("John").lastName("Smith").email("John@Cena.com").build();
 
         employeeRepository.save(employee);
         employeeRepository.save(employee1);
@@ -246,7 +238,7 @@ public class EmployeeRepositoryTests {
     @Test
     @Order(10)
     @DisplayName("JUnit test for custom query using SQL with named params")
-    public void givenFirstAndLastName_whenFindByNativeSQLNamedParams_thenReturnEmployeeObject(){
+    public void givenFirstAndLastName_whenFindByNativeSQLNamedParams_thenReturnEmployeeObject() {
 
         // given - preconditions or setup
         // given - preconditions or setup
@@ -261,6 +253,6 @@ public class EmployeeRepositoryTests {
         Employee savedEmployee = employeeRepository.findByNativeSQLNamedParams(employee.getFirstName(), employee.getLastName());
 
         // then - verify the output
-        assertThat(savedEmployee  ).isNotNull();
+        assertThat(savedEmployee).isNotNull();
     }
 }
