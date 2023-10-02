@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.javaguides.springboot.model.Employee;
 import net.javaguides.springboot.service.EmployeeService;
 import org.hamcrest.CoreMatchers;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatcher;
 import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +17,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
@@ -54,5 +57,36 @@ public class EmployeeControllerTests {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.firstName", CoreMatchers.is(employee.getFirstName())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.lastName", CoreMatchers.is(employee.getLastName())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.email", CoreMatchers.is(employee.getEmail())));
+    }
+
+    // JUnit test for getAllEmployees REST API
+    @Test
+    @DisplayName("")
+    public void givenListOfEmployees_whenGetAllEmployees_thenReturnEmployeesList() throws Exception{
+        // given - preconditions or setup
+        List<Employee> employeeList = new ArrayList<>();
+        employeeList.add(Employee.builder()
+                .id(0)
+                .firstName("Ramesh")
+                .lastName("Fadatare")
+                .email("ramesh@gmail.com")
+                .build());
+        employeeList.add(Employee.builder()
+                .id(1)
+                .firstName("Tony")
+                .lastName("Stark")
+                .email("tony@gmail.com")
+                .build());
+
+        BDDMockito.given(employeeService.getAllEmployees()).willReturn(employeeList);
+
+        // when - actions or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(get("/api/employees"));
+
+        // then - verify the output
+        response.andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.size()", CoreMatchers.is(employeeList.size())));
+
     }
 }
